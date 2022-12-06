@@ -1,0 +1,82 @@
+-- 1
+select * from house_listing 
+where bedroom_number<4 and living_space>2000;
+
+-- 2
+select * from house_listing
+where property_type like '%single_family%';
+
+-- 3
+select * from house_listing
+where property_status like '%pending%';
+
+-- 4
+select p.price, a.postcode from price_table p 
+join address_table a on a.property_id = p.property_id
+where postcode = '2215';
+
+-- 5
+select p.price, h.bathroom_number, h.property_type from price_table p
+join house_listing h on p.property_id = h.property_id
+where h.bathroom_number=2 and h.property_type like '%condo%';
+
+-- 6
+select p.zestimate, h.property_type from price_table p
+join house_listing h on p.property_id = h.property_id
+where h.property_type like '%multi_family%';
+
+-- 7 
+select a.street_name, a.postcode, h.land_space from address_table a
+join house_listing h on h.property_id = a.property_id
+where h.land_space<1300;
+
+-- 8
+select p.property_id, a.address, p.price, p.zestimate from price_table p 
+join address_table a on a.property_id = p.property_id
+where p.zestimate < p.price;
+
+-- 9 
+select avg(p.zestimate) as average_zestimate, a.postcode from price_table p
+join address_table a on a.property_id = p.property_id
+group by a.postcode;
+
+-- 10
+select a.street_name, a.postcode, p.zestimate, p.price from price_table p
+join address_table a on a.property_id = p.property_id
+where p.zestimate > p.price;
+
+-- 11
+select h.property_id, bedroom_number, bathroom_number, living_space, land_space, 
+	property_status, property_type, price_per_unit from house_listing h 
+join price_table p on p.property_id = h.property_id
+where price_per_unit between 300 and 1500;
+
+-- 12
+select price, postcode from price_table p 
+join address_table a on a.property_id = p.property_id
+where postcode = '2115'
+order by price desc
+limit 3;
+
+ -- 13
+select address, bedroom_number, bathroom_number, living_space, zestimate, price from address_table a
+join house_listing h on h.property_id = a.property_id
+join price_table p on p.property_id = a.property_id
+where zestimate = price;
+
+-- 14
+select count(h.agency_id) as famous_agency, agency_name from house_listing h
+join agency a on a.agency_id = h.agency_id
+group by h.agency_id
+order by famous_agency desc
+limit 3;
+
+ -- 15
+select h.property_id, bedroom_number, bathroom_number, living_space, agency_name from house_listing h 
+join agency a on a.agency_id = h.agency_id
+where bedroom_number>3;
+
+-- 16 
+select h.property_id, bedroom_number, bathroom_number, living_space, property_status, agency_name from house_listing h 
+join agency a on a.agency_id = h.agency_id
+where property_status = 'PENDING';
